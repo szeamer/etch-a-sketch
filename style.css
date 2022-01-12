@@ -25,8 +25,10 @@ body{
 }
 
 #slider_container{
-    display: grid;
-    grid-template-rows: 25% auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
 }
 
 #canvas{
@@ -46,19 +48,32 @@ input[type=range]{
     padding-right: 5%;
     margin-top: 16px;
 
-    width: 50vh;
-    max-height: 5vh;
     background: white; 
     /*filter: drop-shadow(0 0 0.75rem rgb(226, 222, 219));*/
     border-radius: 25px;
     width: 20vh;
     height: 5vh;
 
-    transform: rotate(270deg) translate(-75vh, 5vh);
-    transform-origin: center left;
-    position: absolute;
+    transform: rotate(270deg);
+    transform-origin: center;
+    
 }
 
 #resolution{
-    text-align: center;
+    margin-top: 9vh;
+}
+
+#colors{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.color_button{
+    width: 8vh;
+    height: 8vh;
+
+    border: none;
+    border-radius: 50%;
 }
