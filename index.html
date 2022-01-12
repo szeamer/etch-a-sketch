@@ -10,6 +10,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="canvas"></div>
+    <div id="container">
+        <div id="slider_container">
+            <p id="resolution"></p>
+            <input type="range" step="2" min="2" max="50" value="4" class="slider" id="resolution_slider">
+        </div>
+        <div id="canvas"></div>
+        <div id="brushes">
+            <button id="black">Black</button>
+            <button id="red">Red</button>
+            <button id="blue">Blue</button>
+            <button id="green">Green</button>
+            <button id="rainbow">Rainbow</button>
+            <button id="eraser">Eraser</button>
+        </div>
+    </div>
 </body>
 </html>
