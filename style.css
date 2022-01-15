@@ -1,7 +1,9 @@
 html{
     height: 100%;
     width: 100%;
-    background: whitesmoke;
+    background: rgb(236, 231, 231);
+
+    
 }
 
 body{
@@ -15,16 +17,16 @@ body{
 }
 
 #container{
-    width: 100vh;
-    height: 80vh;
+    width: 120vh;
+    height: 84vh;
 
     margin: auto;
 
     display: grid;
-    grid-template-columns: 10% 80% 10%;
+    grid-template-columns: 15% 70% 15%;
 }
 
-#slider_container{
+#setting_container{
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -63,6 +65,17 @@ input[type=range]{
     margin-top: 9vh;
 }
 
+#clear{
+    height: 8vh;
+    width: 8vh;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+
+    border: none;
+    border-radius: 25%;
+    background-color: whitesmoke;
+}
+
 #colors{
     display: flex;
     flex-direction: column;
@@ -73,7 +86,71 @@ input[type=range]{
 .color_button{
     width: 8vh;
     height: 8vh;
+    padding: 0;
 
     border: none;
     border-radius: 50%;
+
+    color: whitesmoke;
+    filter: grayscale(25%) brightness(75%);
+    text-shadow: 1px 1px 15px #797979af;
+
+    cursor: pointer;
+}
+
+.screen{
+    
+    width: 8vh;
+    height: 8vh;
+    border-radius: 50%;
+    opacity: 40%;
+    z-index: -1;
+}
+
+#rainbow{
+    animation: rainbow 6s infinite;
+}
+
+#red{
+    animation: red_a 6s infinite;
+}
+
+#blue{
+    animation: blue_a 6s infinite;
+}
+
+#green{
+    animation: green_a 6s infinite;
+}
+
+#white{
+    color: rgb(48, 48, 48)
+}
+
+@keyframes rainbow{
+    0% {background-color: var(--red);}
+    30% {background-color: var(--green);}
+    60% {background-color: var(--blue);}
+    100% {background-color: var(--red);}
+}
+
+@keyframes blue_a{
+    0% {background-color: var(--blue);}
+    30% {background-color: var(--blue1);}
+    60% {background-color: var(--blue2);}
+    100% {background-color: var(--blue);}
+}
+
+@keyframes red_a{
+    0% {background-color: var(--red);}
+    30% {background-color: var(--red1);}
+    60% {background-color: var(--red2);}
+    100% {background-color: var(--red);}
+}
+
+@keyframes green_a{
+    0% {background-color: var(--green);}
+    30% {background-color: var(--green1);}
+    60% {background-color: var(--green2);}
+    100% {background-color: var(--green);}
 }

@@ -1,86 +1,245 @@
-let color = 'rainbow'
-
-window.onload = () => {
-    setup_canvas(4, color);
-    add_slider_listener();
-    add_color_listeners();
-};
-
-function setup_canvas(dimension, color) {
-    let canvas = document.getElementById("canvas");
-    let pixel_size = (100/dimension).toString()+'%';
-
-    //if there are already pixels on the canvas replace it with an empty one
-    if(canvas.firstChild){
-        empty_canvas = document.createElement("div");
-        empty_canvas.id="canvas";
-        const container = document.querySelector("#container");
-        container.replaceChild(empty_canvas, canvas)
-        canvas = document.getElementById("canvas")
+class Pixel {
+    constructor(color, canvas, size) {
+        this.element = document.createElement("div");
+        this.color = color;
+        this.size = size;
+             
+        this.element.className = "pixel";
+        this.element.style.height = size;
+        this.element.style.width = size;
+        this.add_hover_listener();
+        canvas.appendChild(this.element);
     }
 
-    //populate the canvas with pixels according to the given dimension
-    for(let n = 0; n<(dimension**2); n++){
-        console.log("Populating" + dimension)
-        let pixel = document.createElement("div");
-        pixel.className = "pixel";
-        pixel.style.height = pixel_size;
-        pixel.style.width = pixel_size;
-        //pixel.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
-        canvas.appendChild(pixel);
+    set_color(color) {
+        this.color = color;
     }
 
-    add_hover_listener(color);
-}
+    add_hover_listener() {
+        this.element.addEventListener("mouseover", () => {
+            if(this.color == 'black'){
+                this.element.style.backgroundColor = '#000000';
+            }
+            else if(this.color == 'red'){
+                let randomized_digits = Math.floor(Math.random()*65535).toString(16);
+                let pixel_color = `#FF${randomized_digits}`;
+                this.element.style.backgroundColor = pixel_color;
+            }
+            else if(this.color == 'green'){
+                let randomized_digits_one = Math.floor(Math.random()*255).toString(16);
+                let randomized_digits_two = Math.floor(Math.random()*255).toString(16);
+                let pixel_color = `#${randomized_digits_one}FF${randomized_digits_two}`;
+                this.element.style.backgroundColor = pixel_color;
+            }
+            else if(this.color == 'blue'){
+                let randomized_digits = Math.floor(Math.random()*65535).toString(16);
+                let pixel_color = `#${randomized_digits}FF`;
+                this.element.style.backgroundColor = pixel_color;
 
-function add_hover_listener() {
-    const pixels = document.querySelectorAll(".pixel");
-    console.log('hover_listener added')
-    pixels.forEach(pixel => {
-        pixel.addEventListener("mouseover", function hover_handler(){
-            if(color == 'black'){
-                pixel.style.backgroundColor = '#000000';
             }
-            else if(color == 'rainbow'){
-                pixel.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            else if(this.color == 'rainbow'){
+                console.log('rainbow DETECTED');
+                this.element.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
             }
-            else if(color == 'white'){
-                pixel.style.backgroundColor = '#FFFFFF';
+            else if(this.color == 'white'){
+                this.element.style.backgroundColor = '#FFFFFF';
             }
         });
-    });
+    }
 }
 
-function add_slider_listener() {
-    const slider = document.querySelector("#resolution_slider");
-    const resolution = document.querySelector("#resolution");
-    slider.value = 4;
-    resolution.innerHTML = slider.value + ' x ' + slider.value;
-    slider.oninput = () => {
-        resolution.innerHTML = slider.value + ' x ' + slider.value;
-        setup_canvas(slider.value);
-        add_hover_listener(color);
-    };
+class Canvas {
+    constructor(resolution, color) {
+        this.color = color;
+        this.resolution = resolution;
+        this.canvas_element = document.getElementById("canvas");
+        this.pixel_size = (100/this.resolution).toString()+'%';
+        this.pixels = [];
+        this.set_resolution(this.resolution);
+    }
+
+    set_color(color){
+        this.color = color;
+        for(let pixel of this.pixels){
+            pixel.set_color(this.color)
+        }
+    }
+
+    set_resolution(resolution){
+        this.resolution = resolution;
+
+        //if there are already pixels on the canvas replace it with an empty one
+        if(this.canvas_element.firstChild){
+            let new_canvas = document.createElement("div");
+            new_canvas.id="canvas";
+            const container = document.querySelector("#container");
+            container.replaceChild(new_canvas, this.canvas_element);
+            this.canvas_element = new_canvas;
+        }
+    
+        //populate the canvas with pixels according to the given dimension
+        for(let n = 0; n<(this.resolution**2); n++){
+            let pixel = new Pixel(this.color, this.canvas_element, this.pixel_size);
+            this.pixels.push(pixel);
+        }
+    }
 }
 
-function add_color_listeners() {
-    const rainbow_button = document.querySelector('#rainbow');
-    const black_button = document.querySelector('#black');
-    const eraser_button = document.querySelector('#eraser');
+class EtchASketch {
 
-    rainbow_button.addEventListener("click", () => {
-        console.log('rainbow_listener');
-        color = 'rainbow';
-        add_hover_listener();
-    });
+    constructor() {
+        this.color = 'rainbow';
+        this.resolution = 4;
+        this.canvas = new Canvas(this.resolution, this.color);
+        this.button_colors = [['red', '#FF0000'],
+            ['blue', '#0000FF'],
+            ['green', '#00FF00'],
+            ['black', '#000000'],
+            ['white', '#FFFFFF']];
+        this.add_slider_listener();
+        this.add_color_listeners();
+        this.add_clear_listener();
+        this.select_button(document.querySelector('#rainbow'));
+        this.color_function = function(c) {
+            function random_hex_digits(number){
+                let digits = '';
+                for(let n =0; n<number; n++){
+                    let digit = Math.floor(Math.random()*15).toString(16);
+                    digits += digit;
+                }
+                return digits;
+            }
+            if(c == 'black'){
+                return '#000000';
+            }
+            else if(c == 'red'){
+                let pixel_color = `#FF${random_hex_digits(4)}`;
+                return pixel_color;
+            }
+            else if(c == 'green'){
+                let pixel_color = `#${random_hex_digits(2)}FF${random_hex_digits(2)}`;
+                return pixel_color;
+            }
+            else if(c == 'blue'){
+                let pixel_color = `#${random_hex_digits(4)}FF`;
+                return pixel_color;
 
-    black_button.addEventListener("click", () => {
-        color = 'black';
-        add_hover_listener();
-    });
+            }
+            else if(c == 'rainbow'){
+                console.log('rainbow DETECTED');
+                return `#${random_hex_digits(6)}`;
+            }
+            else if(c == 'white'){
+                return '#FFFFFF';
+            }
+        };
+        console.log('WHAT?' + this.color_function('red') );
+        this.color_buttons();
+    }
 
-    eraser_button.addEventListener("click", () => {
-        color = 'white';
-        add_hover_listener();
-    })
+    set_canvas_color(color) {
+        this.canvas.set_color(color);
+    }
+    
+    add_slider_listener() {
+        const slider = document.querySelector("#resolution_slider");
+        const resolution_text = document.querySelector("#resolution");
+        slider.value = this.resolution;
+
+        resolution_text.innerHTML = slider.value + ' x ' + slider.value;
+        slider.oninput = () => {
+            this.resolution = slider.value;
+            resolution_text.innerHTML = slider.value + ' x ' + slider.value;
+            this.canvas = new Canvas(this.resolution, this.color);
+        };
+    }
+    
+    add_color_listeners() {
+        const rainbow_button = document.querySelector('#rainbow');
+        const black_button = document.querySelector('#black');
+        const red_button = document.querySelector('#red');
+        const blue_button = document.querySelector('#blue');
+        const green_button = document.querySelector('#green')
+        const eraser_button = document.querySelector('#white');
+    
+        const button_color_dict = new Map(
+            [[rainbow_button, 'rainbow'],
+            [black_button, 'black'],
+            [red_button, 'red'],
+            [blue_button, 'blue'],
+            [green_button, 'green'],
+            [eraser_button, 'white']
+            ]);
+    
+        button_color_dict.forEach((value, key) => {
+            key.addEventListener("click", () => {
+                this.select_button(key);
+
+                this.color = value;
+                this.set_canvas_color(this.color);
+            });
+        });
+    }
+
+    select_button(button) {
+        button.style.filter = "brightness(100%) drop-shadow(0 0 5px whitesmoke)";
+        button.style.border = "1px solid whitesmoke";
+        
+        let other_buttons = document.querySelectorAll('.color_button');
+        for(let other_button of other_buttons){
+            if(other_button != button){
+                other_button.style.filter = "grayscale(25%) brightness(75%)";
+                other_button.style.border = "none";
+            }
+        }
+    }
+    
+    color_buttons() {
+        for(let pair of this.button_colors){
+            let color_name = pair[0];
+            let hex_code = pair[1];
+            console.log(`#${color_name}`);
+            let button = document.querySelector(`#${color_name}`);
+
+            button.style.backgroundColor = hex_code;
+        }
+
+        
+        let random_red = this.color_function('red');
+        let random_green = this.color_function('green');
+        let random_blue = this.color_function('blue');
+        document.querySelector('body').style.setProperty('--red', random_red);
+        document.querySelector('body').style.setProperty('--green', random_green);
+        document.querySelector('body').style.setProperty('--blue', random_blue);
+
+        let random_red1 = this.color_function('red');
+        let random_red2 = this.color_function('red');
+        document.querySelector('body').style.setProperty('--red1', random_red1);
+        document.querySelector('body').style.setProperty('--red2', random_red2);
+
+        let random_green1 = this.color_function('green');
+        let random_green2 = this.color_function('green');
+        document.querySelector('body').style.setProperty('--green1', random_green1);
+        document.querySelector('body').style.setProperty('--green2', random_green2);
+
+        let random_blue1 = this.color_function('blue');
+        let random_blue2 = this.color_function('blue');
+        document.querySelector('body').style.setProperty('--blue1', random_blue1);
+        document.querySelector('body').style.setProperty('--blue2', random_blue2);
+
+
+    }
+    
+    add_clear_listener() {
+        const clear_button = document.querySelector('#clear');
+        clear_button.addEventListener('click', () => {
+            this.canvas = new Canvas(this.resolution, this.color);
+        })
+    }
 }
+
+
+window.onload = () => {
+    etch_a_sketch = new EtchASketch();
+};
+
