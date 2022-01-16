@@ -3,8 +3,23 @@ html{
     width: 100%;
     background: rgb(236, 231, 231);
 
-    
+    --green2: #00ff11;
+    --green1: #18b803;
+    --green: #4fffbb;
+
+    --blue: #021dFF;
+    --blue1: #d834FF;
+    --blue2: #5b1bFF;
+
+    --red1: #FF2604;
+    --red2: #FF21d8;
+    --red: #FF7a20;
+
+    --white: #FFFFFF;
+    --black: #000000;
 }
+
+    
 
 body{
     margin: 0;
@@ -96,6 +111,8 @@ input[type=range]{
     text-shadow: 1px 1px 15px #797979af;
 
     cursor: pointer;
+    font-family: Georgia, "Times New Roman", "KaiTi", "??", STKaiti, "????", serif;
+    font-size: larger;
 }
 
 .screen{
@@ -108,7 +125,7 @@ input[type=range]{
 }
 
 #rainbow{
-    background: linear-gradient(to bottom right, var(--red), var(--blue), var(--green));
+    background: linear-gradient(to bottom right, var(--red1), var(--blue), var(--green));
 }
 
 #red{
@@ -124,6 +141,11 @@ input[type=range]{
 }
 
 #white{
+    background: var(--white);
     color: rgb(48, 48, 48)
+}
+
+#black{
+    background: var(--black)
 }
 

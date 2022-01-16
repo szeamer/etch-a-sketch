@@ -134,7 +134,6 @@ class EtchASketch {
             }
         };
         console.log('WHAT?' + this.color_function('red') );
-        this.color_buttons();
     }
 
     set_canvas_color(color) {
@@ -182,53 +181,18 @@ class EtchASketch {
     }
 
     select_button(button) {
-        button.style.filter = "brightness(100%) drop-shadow(0 0 5px whitesmoke)";
-        button.style.border = "1px solid whitesmoke";
+        button.style.filter = "brightness(100%) drop-shadow(0 0 5px grey) contrast(150%";
+        
         
         let other_buttons = document.querySelectorAll('.color_button');
         for(let other_button of other_buttons){
             if(other_button != button){
-                other_button.style.filter = "grayscale(25%) brightness(75%)";
+                other_button.style.filter = "grayscale(25%)";
                 other_button.style.border = "none";
             }
         }
     }
     
-    color_buttons() {
-        for(let pair of this.button_colors){
-            let color_name = pair[0];
-            let hex_code = pair[1];
-            console.log(`#${color_name}`);
-            let button = document.querySelector(`#${color_name}`);
-
-            button.style.backgroundColor = hex_code;
-        }
-
-        
-        let random_red = this.color_function('red');
-        let random_green = this.color_function('green');
-        let random_blue = this.color_function('blue');
-        document.querySelector('body').style.setProperty('--red', random_red);
-        document.querySelector('body').style.setProperty('--green', random_green);
-        document.querySelector('body').style.setProperty('--blue', random_blue);
-
-        let random_red1 = this.color_function('red');
-        let random_red2 = this.color_function('red');
-        document.querySelector('body').style.setProperty('--red1', random_red1);
-        document.querySelector('body').style.setProperty('--red2', random_red2);
-
-        let random_green1 = this.color_function('green');
-        let random_green2 = this.color_function('green');
-        document.querySelector('body').style.setProperty('--green1', random_green1);
-        document.querySelector('body').style.setProperty('--green2', random_green2);
-
-        let random_blue1 = this.color_function('blue');
-        let random_blue2 = this.color_function('blue');
-        document.querySelector('body').style.setProperty('--blue1', random_blue1);
-        document.querySelector('body').style.setProperty('--blue2', random_blue2);
-
-
-    }
     
     add_clear_listener() {
         const clear_button = document.querySelector('#clear');
