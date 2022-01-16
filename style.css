@@ -108,49 +108,22 @@ input[type=range]{
 }
 
 #rainbow{
-    animation: rainbow 6s infinite;
+    background: linear-gradient(to bottom right, var(--red), var(--blue), var(--green));
 }
 
 #red{
-    animation: red_a 6s infinite;
+    background: linear-gradient(to bottom right, var(--red), var(--red1), var(--red2));
 }
 
 #blue{
-    animation: blue_a 6s infinite;
+    background: linear-gradient(to bottom right, var(--blue1), var(--blue), var(--blue2));
 }
 
 #green{
-    animation: green_a 6s infinite;
+    background: linear-gradient(to bottom right, var(--green2), var(--green1), var(--green));
 }
 
 #white{
     color: rgb(48, 48, 48)
 }
 
-@keyframes rainbow{
-    0% {background-color: var(--red);}
-    30% {background-color: var(--green);}
-    60% {background-color: var(--blue);}
-    100% {background-color: var(--red);}
-}
-
-@keyframes blue_a{
-    0% {background-color: var(--blue);}
-    30% {background-color: var(--blue1);}
-    60% {background-color: var(--blue2);}
-    100% {background-color: var(--blue);}
-}
-
-@keyframes red_a{
-    0% {background-color: var(--red);}
-    30% {background-color: var(--red1);}
-    60% {background-color: var(--red2);}
-    100% {background-color: var(--red);}
-}
-
-@keyframes green_a{
-    0% {background-color: var(--green);}
-    30% {background-color: var(--green1);}
-    60% {background-color: var(--green2);}
-    100% {background-color: var(--green);}
-}
